@@ -4,5 +4,5 @@ Pre-requisites:
    - to serve html files
   
 To test game:
-3. run command "http-server" within project directory
-4. Open url http://127.0.0.1:8080/ in web-browser
+1. run command "http-server" within project directory
+2. Open url http://127.0.0.1:8080/ in web-browser

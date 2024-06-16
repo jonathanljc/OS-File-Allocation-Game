@@ -5,4 +5,4 @@ Pre-requisites:
   
 To test game:
 1. run command "http-server" within project directory
-2. Open url http://127.0.0.1:8080/ in web-browser
+2. Open url http://localhost:8080/ in web-browser

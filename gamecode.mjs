@@ -1,36 +1,87 @@
-import { Application, Sprite, Assets } from './pixi.mjs';
+import { Application, Assets, Sprite, SCALE_MODES } from './pixi.mjs';
 
-// The application will create a renderer using WebGL, if possible,
-// with a fallback to a canvas render. It will also setup the ticker
-// and the root stage PIXI.Container
-const app = new Application();
+(async () =>
+{
+    // Create a new application
+    const app = new Application();
 
-// Wait for the Renderer to be available
-await app.init();
+    // Initialize the application
+    await app.init({ background: '#1099bb', resizeTo: window });
 
-// The application will create a canvas element for you that you
-// can then insert into the DOM
-document.body.appendChild(app.canvas);
+    // Append the application canvas to the document body
+    document.body.appendChild(app.canvas);
 
-// load the texture we need
-const texture = await Assets.load('./assets/images/sample.png');
+    // Load the bunny texture
+    const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
 
-// This creates a texture from a 'bunny.png' image
-const bunny = new Sprite(texture);
+    // Set the texture's scale mode to nearest to preserve pixelation
+    texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
 
-// Setup the position of the bunny
-bunny.x = app.renderer.width / 2;
-bunny.y = app.renderer.height / 2;
+    for (let i = 0; i < 10; i++)
+    {
+        createBunny(Math.floor(Math.random() * app.screen.width), Math.floor(Math.random() * app.screen.height));
+    }
 
-// Rotate around the center
-bunny.anchor.x = 0.5;
-bunny.anchor.y = 0.5;
+    function createBunny(x, y)
+    {
+        // Create our little bunny friend..
+        const bunny = new Sprite(texture);
 
-// Add the bunny to the scene we are building
-app.stage.addChild(bunny);
+        // Enable the bunny to be interactive... this will allow it to respond to mouse and touch events
+        bunny.eventMode = 'static';
 
-// Listen for frame updates
-app.ticker.add(() => {
-    // each frame we spin the bunny around a bit
-    bunny.rotation += 0.01;
-});
+        // This button mode will mean the hand cursor appears when you roll over the bunny with your mouse
+        bunny.cursor = 'pointer';
+
+        // Center the bunny's anchor point
+        bunny.anchor.set(0.5);
+
+        // Make it a bit bigger, so it's easier to grab
+        bunny.scale.set(3);
+
+        // Setup events for mouse + touch using the pointer events
+        bunny.on('pointerdown', onDragStart, bunny);
+
+        // Move the sprite to its designated position
+        bunny.x = x;
+        bunny.y = y;
+
+        // Add it to the stage
+        app.stage.addChild(bunny);
+    }
+
+    let dragTarget = null;
+
+    app.stage.eventMode = 'static';
+    app.stage.hitArea = app.screen;
+    app.stage.on('pointerup', onDragEnd);
+    app.stage.on('pointerupoutside', onDragEnd);
+
+    function onDragMove(event)
+    {
+        if (dragTarget)
+        {
+            dragTarget.parent.toLocal(event.global, null, dragTarget.position);
+        }
+    }
+
+    function onDragStart()
+    {
+        // Store a reference to the data
+        // * The reason for this is because of multitouch *
+        // * We want to track the movement of this particular touch *
+        this.alpha = 0.5;
+        dragTarget = this;
+        app.stage.on('pointermove', onDragMove);
+    }
+
+    function onDragEnd()
+    {
+        if (dragTarget)
+        {
+            app.stage.off('pointermove', onDragMove);
+            dragTarget.alpha = 1;
+            dragTarget = null;
+        }
+    }
+})();

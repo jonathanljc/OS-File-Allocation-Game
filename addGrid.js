@@ -1,11 +1,7 @@
-import { Container, Graphics } from './pixi.mjs';
+import { Graphics } from './pixi.mjs';
 
-export function addGrid(app) 
+export function addGrid(app, container) 
 {
-    // Create grid container
-    const container = new Container();
-    app.stage.addChild(container);
-    
     // Create a 5x5 grid of squares in the container
     const graphics = new Graphics();
     for (let i = 0; i < 30; i++)

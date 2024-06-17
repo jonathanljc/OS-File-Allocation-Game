@@ -1,6 +1,5 @@
 import { Assets, Sprite, SCALE_MODES } from './pixi.mjs';
-
-let dragTarget = null;
+import { onDragStart } from './gamecode.mjs';
 
 export async function addFileSprites(app, files)
 {
@@ -11,19 +10,13 @@ export async function addFileSprites(app, files)
     texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
 
     // Create file sprites
-    let x = 200;
-    let y = 200;
-    for (let i = 0; i < 5; i++)
+    let x = 500;
+    let y = 250;
+    for (let i = 0; i < Object.keys(files).length; i++)
     {
         createFile(x, y);
         y += 150;
     }
-
-    // Set-up mouse interactivity
-    app.stage.eventMode = 'static';
-    app.stage.hitArea = app.screen;
-    app.stage.on('pointerup', onDragEnd);
-    app.stage.on('pointerupoutside', onDragEnd);
 
     function createFile(x, y)
     {
@@ -51,33 +44,5 @@ export async function addFileSprites(app, files)
 
         // Add it to the stage
         app.stage.addChild(fileSprite);
-    }
-
-    function onDragStart()
-    {
-        // Store a reference to the data
-        // * The reason for this is because of multitouch *
-        // * We want to track the movement of this particular touch *
-        this.alpha = 0.5;
-        dragTarget = this;
-        app.stage.on('pointermove', onDragMove);
-    }
-
-    function onDragMove(event)
-    {
-        if (dragTarget)
-        {
-            dragTarget.parent.toLocal(event.global, null, dragTarget.position);
-        }
-    }
-
-    function onDragEnd()
-    {
-        if (dragTarget)
-        {
-            app.stage.off('pointermove', onDragMove);
-            dragTarget.alpha = 1;
-            dragTarget = null;
-        }
     }
 }

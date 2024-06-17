@@ -43,6 +43,7 @@ function onDragEnd()
     if (dragTarget)
     {
         app.stage.off('pointermove', onDragMove);
+        // check if file is within bounds of grid
         if (testForAABB(dragTarget, container))
         {
             app.stage.removeChild(dragTarget);

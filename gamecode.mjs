@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, SCALE_MODES } from './pixi.mjs';
+import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillGradient } from './pixi.mjs';
 
 (async () =>
 {
@@ -17,6 +17,46 @@ import { Application, Assets, Sprite, SCALE_MODES } from './pixi.mjs';
     // Set the texture's scale mode to nearest to preserve pixelation
     texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
 
+    // Create gradient fill
+    const fill = new FillGradient(0, 0, 0, 36 * 1.7 * 7);
+
+    const colors = [0xffffff, 0x00ff11].map((color) => Color.shared.setValue(color).toNumber());
+
+    colors.forEach((number, index) =>
+    {
+        const ratio = index / colors.length;
+
+        fill.addColorStop(ratio, number);
+    });
+
+    // Initialize rich text style
+    const style = new TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 36,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        fill: { fill },
+        stroke: { color: '#4a1850', width: 5, join: 'round' },
+        dropShadow: {
+            color: '#000000',
+            blur: 4,
+            angle: Math.PI / 6,
+            distance: 6,
+        },
+    });
+
+    // Create rich text
+    const richText = new Text({
+        text: 'Drag and drop bunnies',
+        style,
+    });
+
+    richText.x = 100;
+    richText.y = 50;
+
+    app.stage.addChild(richText);
+
+    // Create 10 bunnies
     for (let i = 0; i < 10; i++)
     {
         createBunny(Math.floor(Math.random() * app.screen.width), Math.floor(Math.random() * app.screen.height));

@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillGradient } from './pixi.mjs';
+import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillGradient, Container, Graphics } from './pixi.mjs';
 
 (async () =>
 {
@@ -6,10 +6,32 @@ import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillG
     const app = new Application();
 
     // Initialize the application
-    await app.init({ background: '#1099bb', resizeTo: window });
+    await app.init({ background: '#1099ff', antialias: true, resizeTo: window });
 
     // Append the application canvas to the document body
     document.body.appendChild(app.canvas);
+
+    // Create grid container
+    const container = new Container();
+    app.stage.addChild(container);
+    
+    // Create a 5x5 grid of squares in the container
+    const graphics = new Graphics();
+    for (let i = 0; i < 30; i++)
+    {
+        let x = (i % 5) * 100;
+        let y = Math.floor(i / 5) * 100;
+        // Rectangle + line style 2
+        graphics.rect(x, y, 100, 100);
+        graphics.fill(0xc34288);
+        graphics.stroke({ width: 10, color: 0xffffff });
+    }
+
+    container.addChild(graphics);
+    container.x = app.screen.width / 2;
+    container.y = app.screen.height / 2;
+    container.pivot.x = container.width / 2;
+    container.pivot.y = container.height / 2;
 
     // Load the bunny texture
     const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
@@ -19,13 +41,10 @@ import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillG
 
     // Create gradient fill
     const fill = new FillGradient(0, 0, 0, 36 * 1.7 * 7);
-
     const colors = [0xffffff, 0x00ff11].map((color) => Color.shared.setValue(color).toNumber());
-
     colors.forEach((number, index) =>
     {
         const ratio = index / colors.length;
-
         fill.addColorStop(ratio, number);
     });
 
@@ -50,16 +69,17 @@ import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillG
         text: 'Drag and drop bunnies',
         style,
     });
-
     richText.x = 100;
     richText.y = 50;
-
     app.stage.addChild(richText);
 
-    // Create 10 bunnies
-    for (let i = 0; i < 10; i++)
+    // Create bunnies
+    let x = 200;
+    let y = 200;
+    for (let i = 0; i < 5; i++)
     {
-        createBunny(Math.floor(Math.random() * app.screen.width), Math.floor(Math.random() * app.screen.height));
+        createBunny(x, y);
+        y += 150;
     }
 
     function createBunny(x, y)
@@ -77,7 +97,7 @@ import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillG
         bunny.anchor.set(0.5);
 
         // Make it a bit bigger, so it's easier to grab
-        bunny.scale.set(3);
+        bunny.scale.set(2);
 
         // Setup events for mouse + touch using the pointer events
         bunny.on('pointerdown', onDragStart, bunny);
@@ -91,7 +111,6 @@ import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillG
     }
 
     let dragTarget = null;
-
     app.stage.eventMode = 'static';
     app.stage.hitArea = app.screen;
     app.stage.on('pointerup', onDragEnd);
@@ -124,4 +143,6 @@ import { Application, Assets, Sprite, SCALE_MODES, Text, TextStyle, Color, FillG
             dragTarget = null;
         }
     }
+
+    
 })();

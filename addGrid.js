@@ -2,6 +2,7 @@ import { Graphics } from './pixi.mjs';
 
 export function addGrid(app, container, fileNum, blocks, gridPlacement) 
 {   
+    // Blocks added counter
     let blocksAdded = 0;
 
     // Create a 5x5 grid of squares in the container
@@ -12,13 +13,17 @@ export function addGrid(app, container, fileNum, blocks, gridPlacement)
         let y = Math.floor(i / 5) * 100;
         // Rectangle + line style 2
         graphics.rect(x, y, 100, 100);
+
+        // If fileNum is not 0, add the file to the grid
         if(fileNum != 0){
+            // If the grid is empty and we haven't added all the blocks yet, add the file
             if (gridPlacement[i] == 0 && blocksAdded < blocks) {
                 gridPlacement[i] = fileNum;
                 blocksAdded++;
             }
         }
 
+        // Colour the grid based on the file colour
         if (gridPlacement[i] == 0) {
             graphics.fill(0xc34288); // Black
         }else if(gridPlacement[i] == 1){

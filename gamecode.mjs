@@ -35,6 +35,7 @@ Object.keys(files).forEach(key => {
     files[key] = getRandomInt(1, 20).toString();
 });
 
+// Grid array to keep track of which blocks are used (0 means empty, 1-4 is a file)
 let gridPlacement = new Array(30);
 gridPlacement.fill(0);
 
@@ -58,6 +59,8 @@ const fileSpriteContainer = new Container();
 app.stage.addChild(fileSpriteContainer);
 addFileSprites(fileSpriteContainer, files);
 
+// Colourise the grid based on the files
+// Removes the grid and re-adds it with the new file placements
 function coloriseGrid(fileNum, blocks)
 {
     app.stage.removeChild(gridContainer);

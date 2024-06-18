@@ -18,11 +18,22 @@ document.body.appendChild(app.canvas);
 
 // Dictionary of files' size attribute, in blocks of memory.
 let files = {
-    '1': "2",
-    '2': "5",
-    '3': "15",
-    '4': "20",
+    '1': "0",
+    '2': "0",
+    '3': "0",
+    '4': "0",
 }
+
+// Function to generate a random integer between min and max (inclusive)
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Iterate over the keys of the files dictionary and assign a new random value
+Object.keys(files).forEach(key => {
+    // Assuming you want the random value to be between 1 and 20
+    files[key] = getRandomInt(1, 20).toString();
+});
 
 // Create grid container
 const gridContainer = new Container();

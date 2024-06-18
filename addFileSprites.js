@@ -1,24 +1,25 @@
-import { Assets, Sprite, SCALE_MODES } from './pixi.mjs';
-import { onDragStart } from './gamecode.mjs';
+import { Assets, Sprite, SCALE_MODES, Container } from './pixi.mjs';
+import { onDragStart, onHover, onStopHovering } from './gamecode.mjs';
 
-export async function addFileSprites(app, files)
+export async function addFileSprites(container, files)
 {
     // Load the bunny texture
     const texture = await Assets.load('./assets/images/file.png');
 
     // Set the texture's scale mode to nearest to preserve pixelation
-    texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+    texture.source.scaleMode = 'nearest';
 
     // Create file sprites
     let x = 500;
     let y = 250;
     for (let i = 0; i < Object.keys(files).length; i++)
     {
-        createFile(x, y);
+        let fileNum = Object.keys(files)[i];
+        createFile(x, y, fileNum);
         y += 150;
     }
 
-    function createFile(x, y)
+    function createFile(x, y, fileNum)
     {
         // Create our little bunny friend..
         const fileSprite = new Sprite(texture);
@@ -37,12 +38,17 @@ export async function addFileSprites(app, files)
 
         // Setup events for mouse + touch using the pointer events
         fileSprite.on('pointerdown', onDragStart, fileSprite);
+        fileSprite.on('pointerenter', onHover, fileSprite);
+        fileSprite.on('pointerleave', onStopHovering, fileSprite);
 
         // Move the sprite to its designated position
         fileSprite.x = x;
         fileSprite.y = y;
 
+        // Set file sprite label as the corresponding file number
+        fileSprite.label = fileNum;
+
         // Add it to the stage
-        app.stage.addChild(fileSprite);
+        container.addChild(fileSprite);
     }
 }

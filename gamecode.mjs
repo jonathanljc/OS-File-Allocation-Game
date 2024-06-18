@@ -2,10 +2,13 @@ import { addFileSprites } from './addFileSprites.js';
 import { addGrid } from './addGrid.js';
 import { addText } from './addText.js';
 import { testForAABB } from './checkFile.js';
+import { addFileInfoText } from './addFileInfoText.js';
 import { Application, Container } from './pixi.mjs';
 
 // Create a new application
 const app = new Application();
+globalThis.__PIXI_STAGE__ = app.stage;
+globalThis.__PIXI_RENDERER__ = app.renderer;
 
 // Initialize the application
 await app.init({ background: '#1099ff', antialias: true, resizeTo: window });
@@ -13,19 +16,20 @@ await app.init({ background: '#1099ff', antialias: true, resizeTo: window });
 // Append the application canvas to the document body
 document.body.appendChild(app.canvas);
 
-// Declare file attributes
+// Dictionary of files' size attribute, in blocks of memory.
 let files = {
-    1: "2",
-    2: "5",
-    3: "15",
-    4: "20",
+    '1': "2",
+    '2': "5",
+    '3': "15",
+    '4': "20",
 }
 
 // Create grid container
-const container = new Container();
-app.stage.addChild(container);
-addGrid(app, container);
+const gridContainer = new Container();
+app.stage.addChild(gridContainer);
+addGrid(app, gridContainer);
 
+// Create instructional text
 addText(app);
 
 // Set-up mouse interactivity
@@ -36,7 +40,9 @@ app.stage.on('pointerup', onDragEnd);
 app.stage.on('pointerupoutside', onDragEnd);
 
 // Add file sprites with mouse interactivity
-addFileSprites(app, files);
+const fileSpriteContainer = new Container();
+app.stage.addChild(fileSpriteContainer);
+addFileSprites(fileSpriteContainer, files);
 
 function onDragEnd()
 {
@@ -44,9 +50,10 @@ function onDragEnd()
     {
         app.stage.off('pointermove', onDragMove);
         // check if file is within bounds of grid
-        if (testForAABB(dragTarget, container))
+        if (testForAABB(dragTarget, gridContainer))
         {
-            app.stage.removeChild(dragTarget);
+            fileSpriteContainer.removeChild(dragTarget);
+            app.stage.removeChild(app.stage.getChildByLabel('fileInfo'));
             dragTarget = null;
         }
         else
@@ -62,6 +69,7 @@ function onDragMove(event)
     if (dragTarget)
     {
         dragTarget.parent.toLocal(event.global, null, dragTarget.position);
+        
     }
 }
 
@@ -73,4 +81,25 @@ export function onDragStart()
     this.alpha = 0.5;
     dragTarget = this;
     app.stage.on('pointermove', onDragMove);
+}
+
+export function onHover() 
+{
+    const fileBlocks = files[this.label];
+    const fileInfoText = addFileInfoText(app, this, fileBlocks)
+
+    const fileInfoContainer = new Container();
+    fileInfoContainer.label = 'fileInfo';
+
+    for (let fileInfo of fileInfoText) 
+    {
+        fileInfoContainer.addChild(fileInfo);
+    }
+
+    app.stage.addChild(fileInfoContainer);
+}
+
+export function onStopHovering()
+{
+    app.stage.removeChild(app.stage.getChildByLabel('fileInfo'));
 }

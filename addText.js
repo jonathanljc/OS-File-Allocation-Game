@@ -14,7 +14,7 @@ export function addText(app)
     // Initialize rich text style
     const style = new TextStyle({
         fontFamily: 'Arial',
-        fontSize: 30,
+        fontSize: 25,
         fontStyle: 'italic',
         fontWeight: 'bold',
         fill: { fill },
@@ -32,7 +32,7 @@ export function addText(app)
         text: 'Contiguous File Allocation:',
         style,
     });
-    allocateMethod.x = 100;
+    allocateMethod.x = 25;
     allocateMethod.y = 25;
     app.stage.addChild(allocateMethod);
 
@@ -41,7 +41,7 @@ export function addText(app)
         text: 'Drag and drop files into storage',
         style,
     });
-    instruction.x = 100;
+    instruction.x = 25;
     instruction.y = 75;
     app.stage.addChild(instruction);
 
@@ -52,6 +52,6 @@ export function addText(app)
     });
     storageLabel.anchor.set(0.5);
     storageLabel.x = app.screen.width / 2;
-    storageLabel.y = 130;
+    storageLabel.y = 50;
     app.stage.addChild(storageLabel);
 }

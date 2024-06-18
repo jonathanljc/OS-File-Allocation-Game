@@ -11,7 +11,7 @@ globalThis.__PIXI_STAGE__ = app.stage;
 globalThis.__PIXI_RENDERER__ = app.renderer;
 
 // Initialize the application
-await app.init({ background: '#1099ff', antialias: true, resizeTo: window });
+await app.init({ background: '#1099ff', antialias: true, width: 1200, height: 800});
 
 // Append the application canvas to the document body
 document.body.appendChild(app.canvas);

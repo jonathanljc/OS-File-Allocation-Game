@@ -10,8 +10,8 @@ export async function addFileSprites(container, files)
     texture.source.scaleMode = 'nearest';
 
     // Create file sprites
-    let x = 500;
-    let y = 250;
+    let x = 900;
+    let y = 150;
     for (let i = 0; i < Object.keys(files).length; i++)
     {
         let fileNum = Object.keys(files)[i];

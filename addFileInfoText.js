@@ -14,7 +14,7 @@ export function addFileInfoText(app, fileSprite, fileBlocks)
     // Initialize rich text style
     const style = new TextStyle({
         fontFamily: 'Arial',
-        fontSize: 30,
+        fontSize: 25,
         fontStyle: 'italic',
         fontWeight: 'bold',
         fill: { fill },
@@ -32,14 +32,14 @@ export function addFileInfoText(app, fileSprite, fileBlocks)
         text: 'File number: ' + fileSprite.label,
         style,
     });
-    fileNum.x = app.screen.width / 2 + 400;
+    fileNum.x = 25;
     fileNum.y = 150;
 
     const fileBlocksText = new Text({
         text: 'Memory blocks needed: ' + fileBlocks,
         style,
     });
-    fileBlocksText.x = app.screen.width / 2 + 400;
+    fileBlocksText.x = 25;
     fileBlocksText.y = 200;
 
     return [fileNum, fileBlocksText];

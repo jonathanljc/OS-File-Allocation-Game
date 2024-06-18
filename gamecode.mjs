@@ -3,6 +3,7 @@ import { addGrid } from './addGrid.js';
 import { addText } from './addText.js';
 import { testForAABB } from './checkFile.js';
 import { addFileInfoText } from './addFileInfoText.js';
+import { createFileAllocationTable } from './allocationTable.js';
 import { Application, Container } from './pixi.mjs';
 
 // Create a new application

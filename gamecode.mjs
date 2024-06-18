@@ -31,14 +31,17 @@ function getRandomInt(min, max) {
 
 // Iterate over the keys of the files dictionary and assign a new random value
 Object.keys(files).forEach(key => {
-    // Assuming you want the random value to be between 1 and 20
+    // Randomise value to be between 1 and 20
     files[key] = getRandomInt(1, 20).toString();
 });
+
+let gridPlacement = new Array(30);
+gridPlacement.fill(0);
 
 // Create grid container
 const gridContainer = new Container();
 app.stage.addChild(gridContainer);
-addGrid(app, gridContainer);
+addGrid(app, gridContainer, 0, 0, gridPlacement);
 
 // Create instructional text
 addText(app);
@@ -55,6 +58,13 @@ const fileSpriteContainer = new Container();
 app.stage.addChild(fileSpriteContainer);
 addFileSprites(fileSpriteContainer, files);
 
+function coloriseGrid(fileNum, blocks)
+{
+    app.stage.removeChild(gridContainer);
+    app.stage.addChildAt(gridContainer, 0);
+    addGrid(app, gridContainer, fileNum, blocks, gridPlacement);
+}
+
 function onDragEnd()
 {
     if (dragTarget)
@@ -65,6 +75,7 @@ function onDragEnd()
         {
             fileSpriteContainer.removeChild(dragTarget);
             app.stage.removeChild(app.stage.getChildByLabel('fileInfo'));
+            coloriseGrid(dragTarget.label, files[dragTarget.label]);
             dragTarget = null;
         }
         else

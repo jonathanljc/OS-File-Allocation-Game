@@ -66,6 +66,7 @@ function coloriseGrid(fileNum, blocks)
     app.stage.removeChild(gridContainer);
     app.stage.addChildAt(gridContainer, 0);
     addGrid(app, gridContainer, fileNum, blocks, gridPlacement);
+    createFileAllocationTable(app, files, gridPlacement);  // Update the file allocation table
 }
 
 function onDragEnd()

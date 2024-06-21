@@ -8,7 +8,7 @@ export function createFileAllocationTable(app, files, gridPlacement) {
     // Define the style for the table text
     const style = new TextStyle({
         fontFamily: 'Courier New', // Monospaced font for proper alignment
-        fontSize: 10,              // Smaller font size
+        fontSize: 13,              // Smaller font size
         fill: 'white',             // Text color
     });
 

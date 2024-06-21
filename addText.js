@@ -29,7 +29,7 @@ export function addText(app)
 
     // Create file allocation method text
     const allocateMethod = new Text({
-        text: 'Contiguous File Allocation:',
+        text: 'Contiguous File Allocation: Drag and drop files into storage',
         style,
     });
     allocateMethod.x = 25;
@@ -37,13 +37,13 @@ export function addText(app)
     app.stage.addChild(allocateMethod);
 
     // Create game instruction text
-    const instruction = new Text({
-        text: 'Drag and drop files into storage',
-        style,
-    });
-    instruction.x = 25;
-    instruction.y = 75;
-    app.stage.addChild(instruction);
+    // const instruction = new Text({
+    //     text: 'Drag and drop files into storage',
+    //     style,
+    // });
+    // instruction.x = 25;
+    // instruction.y = 75;
+    // app.stage.addChild(instruction);
 
     // Create file storage label
     const storageLabel = new Text({
@@ -52,6 +52,6 @@ export function addText(app)
     });
     storageLabel.anchor.set(0.5);
     storageLabel.x = app.screen.width / 2;
-    storageLabel.y = 50;
+    storageLabel.y = 725;
     app.stage.addChild(storageLabel);
 }

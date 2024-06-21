@@ -36,7 +36,7 @@ export function addFileInfoText(app, fileSprite, fileBlocks)
     fileNum.y = 150;
 
     const fileBlocksText = new Text({
-        text: 'Memory blocks needed: ' + fileBlocks,
+        text: 'Memory blocks: ' + fileBlocks,
         style,
     });
     fileBlocksText.x = 25;

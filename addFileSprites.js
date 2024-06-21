@@ -1,7 +1,7 @@
-import { Assets, Sprite, SCALE_MODES, Container } from './pixi.mjs';
+import { Assets, Sprite, SCALE_MODES, Container, Point } from './pixi.mjs';
 import { onDragStart, onHover, onStopHovering } from './gamecode.mjs';
 
-export async function addFileSprites(container, files)
+export async function addFileSprites(container, files, originalSpritePos)
 {
     // Load the bunny texture
     const texture = await Assets.load('./assets/images/file.png');
@@ -16,6 +16,7 @@ export async function addFileSprites(container, files)
     {
         let fileNum = Object.keys(files)[i];
         createFile(x, y, fileNum);
+        originalSpritePos[i] = new Point(x, y);
         y += 150;
     }
 

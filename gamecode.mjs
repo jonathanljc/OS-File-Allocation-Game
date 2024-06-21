@@ -1,9 +1,7 @@
 import { addFileSprites } from './addFileSprites.js';
-import { addGrid } from './addGrid.js';
-import { addText } from './addText.js';
-import { testForAABB } from './checkFile.js';
-import { addFileInfoText } from './addFileInfoText.js';
-import { createFileAllocationTable } from './allocationTable.js';
+import { addGrid, colorInGrid } from './addGraphics.js';
+import { addStartingText, addGridFullText, addFileInfoText, createFileAllocationTable } from './addText.js';
+import { testForAABB } from './checkFileInsideStorage.js';
 import { Application, Container } from './pixi.mjs';
 
 // Create a new application
@@ -25,15 +23,12 @@ let files = {
     '4': "0",
 }
 
-// Function to generate a random integer between min and max (inclusive)
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 // Iterate over the keys of the files dictionary and assign a new random value
 Object.keys(files).forEach(key => {
     // Randomise value to be between 1 and 20
-    files[key] = getRandomInt(1, 20).toString();
+    let min = 10;
+    let max = 20;
+    files[key] = (Math.floor(Math.random() * (max - min + 1)) + min).toString();
 });
 
 // Grid array to keep track of which blocks are used (0 means empty, 1-4 is a file)
@@ -46,7 +41,7 @@ app.stage.addChild(gridContainer);
 addGrid(app, gridContainer, 0, 0, gridPlacement);
 
 // Create instructional text
-addText(app);
+addStartingText(app);
 
 // Set-up mouse interactivity
 let dragTarget = null;
@@ -58,30 +53,32 @@ app.stage.on('pointerupoutside', onDragEnd);
 // Add file sprites with mouse interactivity
 const fileSpriteContainer = new Container();
 app.stage.addChild(fileSpriteContainer);
-addFileSprites(fileSpriteContainer, files);
+let originalSpritePos = {};
+addFileSprites(fileSpriteContainer, files, originalSpritePos);
 
-// Colourise the grid based on the files
-// Removes the grid and re-adds it with the new file placements
-function coloriseGrid(fileNum, blocks)
-{
-    app.stage.removeChild(gridContainer);
-    app.stage.addChildAt(gridContainer, 0);
-    addGrid(app, gridContainer, fileNum, blocks, gridPlacement);
-    createFileAllocationTable(app, files, gridPlacement);  // Update the file allocation table
-}
 
 function onDragEnd()
 {
     if (dragTarget)
     {
         app.stage.off('pointermove', onDragMove);
-        // check if file is within bounds of grid
+        // check if file is within bounds of storage grid graphic
         if (testForAABB(dragTarget, gridContainer))
         {
-            fileSpriteContainer.removeChild(dragTarget);
-            app.stage.removeChild(app.stage.getChildByLabel('fileInfo'));
-            coloriseGrid(dragTarget.label, files[dragTarget.label]);
-            dragTarget = null;
+            try {
+                colorInGrid(app, dragTarget.label, files[dragTarget.label], gridPlacement, gridContainer, files); // color-in grids based on num of blocks of memory that the selected file needs
+                createFileAllocationTable(app, gridPlacement); // Update the file allocation table
+                fileSpriteContainer.removeChild(dragTarget);
+                app.stage.removeChild(app.stage.getChildByLabel('fileInfo'));
+                dragTarget = null;
+            }
+            catch (e) {
+                // Catch error thrown when not enough empty blocks in storage to hold file
+                dragTarget.position = originalSpritePos[dragTarget.label.valueOf()-1] // return sprite to original position
+                dragTarget.alpha = 1;
+                dragTarget = null;
+                addGridFullText(app);
+            }
         }
         else
         {
@@ -96,7 +93,6 @@ function onDragMove(event)
     if (dragTarget)
     {
         dragTarget.parent.toLocal(event.global, null, dragTarget.position);
-        
     }
 }
 

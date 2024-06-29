@@ -118,16 +118,15 @@ function checkIfCanFill(gridPlacement, blocks)
     for (let i = 0; i < gridPlacement.length; i++) {
         if (gridPlacement[i] == 0) {
             emptySpaces++;
+            if (emptySpaces >= blocks)
+                return true;
         }
         else {
             emptySpaces = 0;
         }
     }
 
-    if (emptySpaces < blocks)
-        return false;
-    else 
-        return true;
+    return false;
 }
 
 export function addMenuBtn(app, x, y, btnLength, btnHeight)

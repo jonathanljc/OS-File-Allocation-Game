@@ -27,7 +27,7 @@ let files = {
 Object.keys(files).forEach(key => {
     // Randomise value to be between 1 and 20
     let min = 5;
-    let max = 10;
+    let max = 15;
     files[key] = (Math.floor(Math.random() * (max - min + 1)) + min).toString();
 });
 
@@ -153,6 +153,5 @@ export function onClick()
         targetFile = this;
         targetFile.alpha = 1;
         removeColoredSquares(app, targetFile.label, files[targetFile.label], gridPlacement, gridContainer);
-
     }
 }

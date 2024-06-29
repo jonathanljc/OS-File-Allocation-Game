@@ -1,5 +1,5 @@
-import { Assets, Sprite, SCALE_MODES, Container, Point } from './pixi.mjs';
-import { onDragStart, onHover, onStopHovering } from './gamecode.mjs';
+import { Assets, Sprite, Point } from './pixi.mjs';
+import { onClick, onDragStart, onHover, onStopHovering } from './ContiguousGamecode.mjs';
 
 export async function addFileSprites(container, files, originalSpritePos)
 {
@@ -10,8 +10,8 @@ export async function addFileSprites(container, files, originalSpritePos)
     texture.source.scaleMode = 'nearest';
 
     // Create file sprites
-    let x = 900;
-    let y = 150;
+    let x = 1000;
+    let y = 175;
     for (let i = 0; i < Object.keys(files).length; i++)
     {
         let fileNum = Object.keys(files)[i];
@@ -38,7 +38,7 @@ export async function addFileSprites(container, files, originalSpritePos)
         fileSprite.scale.set(0.15);
 
         // Setup events for mouse + touch using the pointer events
-        fileSprite.on('pointerdown', onDragStart, fileSprite);
+        fileSprite.on('pointerdown', onClick, fileSprite);
         fileSprite.on('pointerenter', onHover, fileSprite);
         fileSprite.on('pointerleave', onStopHovering, fileSprite);
 

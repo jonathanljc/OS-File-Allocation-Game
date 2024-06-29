@@ -192,3 +192,47 @@ export function createFileAllocationTable(app, gridPlacement) {
     // Add the table container to the app stage
     app.stage.addChild(tableContainer);
 }
+
+export function addTitleText(app)
+{
+    const title = new Text({ 
+        text: 'File Allocation Game!', 
+        style, 
+    });
+
+    title.anchor.set(0.5);
+    title.x = app.screen.width / 2;
+    title.y = 200;
+
+    app.stage.addChild(title);
+
+    const subtitle = new Text({ 
+        text: 'Learn how OSes allocate storage space to files, using the contiguous and extent-based methods.', 
+        style, 
+    });
+
+    subtitle.anchor.set(0.5);
+    subtitle.x = app.screen.width / 2;
+    subtitle.y = 300;
+
+    app.stage.addChild(subtitle);
+}
+
+export function addMenuBtnText(app, x, y, btnLength, btnHeight)
+{
+    const contiText = new Text({ text: 'Contiguous' });
+    
+    contiText.anchor.set(0.5);
+    contiText.x = x + (btnLength / 2);
+    contiText.y = y + (btnHeight / 2);
+
+    app.stage.addChild(contiText);
+
+    const extText = new Text({ text: 'Extent-based' });
+
+    extText.anchor.set(0.5);
+    extText.x = x + (btnLength / 2);
+    extText.y = y + (btnHeight / 2) + 100;
+
+    app.stage.addChild(extText);
+}

@@ -26,7 +26,7 @@ export function addGrid(app, container, fileNum, blocks, gridPlacement)
 
         // Colour the grid based on the file colour
         if (gridPlacement[i] == 0) {
-            graphics.fill(0xc34288); // Black
+            graphics.fill(0xc34288); // Magenta (default)
         }else if(gridPlacement[i] == 1){
             graphics.fill(0xA52A2A); // Brown
         }else if(gridPlacement[i] == 2){
@@ -61,6 +61,55 @@ export function colorInGrid(app, fileNum, blocks, gridPlacement, gridContainer)
     }
 }
 
+export function removeFile(app, container, fileNum, blocks, gridPlacement) 
+{   
+    // Create a 5x5 grid of squares in the container
+    const graphics = new Graphics();
+    for (let i = 0; i < 30; i++)
+    {
+        let x = (i % 5) * 100;
+        let y = Math.floor(i / 5) * 100;
+        // Rectangle + line style 2
+        graphics.rect(x, y, 100, 100);
+        graphics.stroke({ width: 10, color: 0xffffff });
+
+        // If fileNum is not 0, and still have file blocks allocated, remove file from the grid
+        if(fileNum != 0 && blocks != 0){
+            // if grid is not default, and grid is same colour as filenum, set grid back to default, then decrement blocks left to deallocate
+            if (gridPlacement[i] != 0 && gridPlacement[i] == fileNum) {
+                gridPlacement[i] = 0;
+                blocks--;
+            }
+        }
+
+        // Colour the grid based on the colour code
+        if (gridPlacement[i] == 0) {
+            graphics.fill(0xc34288); // Magenta (default)
+        }else if(gridPlacement[i] == 1){
+            graphics.fill(0xA52A2A); // Brown
+        }else if(gridPlacement[i] == 2){
+            graphics.fill(0x7FFF00); // Chartreuse
+        }else if(gridPlacement[i] == 3){
+            graphics.fill(0x0000FF); // Blue
+        }else{
+            graphics.fill(0xFFFF00); // Yellow
+        }
+    }
+
+    container.addChild(graphics);
+    container.x = app.screen.width / 2;
+    container.y = app.screen.height / 2;
+    container.pivot.x = container.width / 2;
+    container.pivot.y = container.height / 2;
+}
+
+export function removeColoredSquares(app, fileNum, blocks, gridPlacement, gridContainer)
+{
+    removeFile(app, gridContainer, fileNum, blocks, gridPlacement);
+    app.stage.removeChild(gridContainer);
+    app.stage.addChildAt(gridContainer, 0);
+}
+
 function checkIfCanFill(gridPlacement, blocks) 
 {
     if (blocks == 0) return true;
@@ -79,4 +128,27 @@ function checkIfCanFill(gridPlacement, blocks)
         return false;
     else 
         return true;
+}
+
+export function addMenuBtn(app, x, y, btnLength, btnHeight)
+{
+    const contiBtn = new Graphics();
+    
+    contiBtn.rect(x,y,btnLength,btnHeight);
+    contiBtn.fill(0x69ed5c);
+
+    app.stage.addChild(contiBtn);
+
+    contiBtn.eventMode = 'static';
+    contiBtn.on('pointerdown', goContiguous, contiBtn);
+
+    const extBtn = new Graphics();
+    y = y + 100;
+    extBtn.rect(x,y,btnLength,btnHeight);
+    extBtn.fill(0xd8eb4d);
+
+    app.stage.addChild(extBtn);
+
+    extBtn.eventMode = 'static';
+    extBtn.on('pointerdown', goExtentBased, extBtn);
 }

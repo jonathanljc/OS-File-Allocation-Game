@@ -1,5 +1,5 @@
 import { Graphics } from './pixi.mjs';
-
+import { createFileAllocationTable } from './addText.js';
 export function addGrid(app, container, fileNum, blocks, gridPlacement) 
 {   
     // Blocks added counter
@@ -80,6 +80,10 @@ export function removeFile(app, container, fileNum, blocks, gridPlacement)
                 gridPlacement[i] = 0;
                 blocks--;
             }
+
+    // Add the call to update the file allocation table
+    createFileAllocationTable(app, gridPlacement);
+            
         }
 
         // Colour the grid based on the colour code
@@ -108,6 +112,9 @@ export function removeColoredSquares(app, fileNum, blocks, gridPlacement, gridCo
     removeFile(app, gridContainer, fileNum, blocks, gridPlacement);
     app.stage.removeChild(gridContainer);
     app.stage.addChildAt(gridContainer, 0);
+
+    // Add the call to update the file allocation table
+    createFileAllocationTable(app, gridPlacement);
 }
 
 function checkIfCanFill(gridPlacement, blocks) 

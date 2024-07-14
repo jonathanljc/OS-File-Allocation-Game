@@ -38,7 +38,7 @@ export function addStartingText(app)
 
     // Create file storage label
     const storageLabel = new Text({
-        text: 'File Storage',
+        text: 'Secondary Storage',
         style,
     });
     storageLabel.anchor.set(0.5);
@@ -72,7 +72,7 @@ export function addFileInfoText(app, fileSprite, fileBlocks)
     fileNum.y = 150;
 
     const fileBlocksText = new Text({
-        text: 'Memory blocks: ' + fileBlocks,
+        text: 'Blocks: ' + fileBlocks,
         style,
     });
     fileBlocksText.x = 25;
@@ -93,11 +93,19 @@ export function createFileAllocationTable(app, gridPlacement) {
     const tableContainer = new Container();
     tableContainer.name = 'fileAllocationTable';
 
-    // Define the style for the table text
     const style = new TextStyle({
-        fontFamily: 'Courier New', // Monospaced font for proper alignment
-        fontSize: 13,              // Smaller font size
-        fill: 'white',             // Text color
+        fontFamily: 'Arial',
+        fontSize: 15,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        fill: { fill },
+        stroke: { color: '#4a1850', width: 5, join: 'round' },
+        dropShadow: {
+            color: '#000000',
+            blur: 4,
+            angle: Math.PI / 6,
+            distance: 6,
+        },
     });
 
     // Create the header for the table
@@ -106,12 +114,12 @@ export function createFileAllocationTable(app, gridPlacement) {
         style
     });
     header.x = 10;                // X position of the header
-    header.y = 300;               // Y position of the header
+    header.y = 310;               // Y position of the header
     tableContainer.addChild(header); // Add the header to the container
 
     // Define column titles and their positions
-    const titles = ["File-Num", "Start", "Length", "Allocated-Blocks"];
-    const columnPositions = [10, 80, 125, 180]; // Adjust column positions to fit better
+    const titles = ["Num", "Start", "Length", "Allocated-Blocks"];
+    const columnPositions = [10, 60, 110, 180]; // Adjust column positions to fit better
 
     // Create and position each column title
     titles.forEach((title, index) => {
@@ -198,48 +206,4 @@ export function createFileAllocationTable(app, gridPlacement) {
 
     // Add the table container to the app stage
     app.stage.addChild(tableContainer);
-}
-
-export function addTitleText(app)
-{
-    const title = new Text({ 
-        text: 'File Allocation Game!', 
-        style, 
-    });
-
-    title.anchor.set(0.5);
-    title.x = app.screen.width / 2;
-    title.y = 200;
-
-    app.stage.addChild(title);
-
-    const subtitle = new Text({ 
-        text: 'Learn how OSes allocate storage space to files, using the contiguous and extent-based methods.', 
-        style, 
-    });
-
-    subtitle.anchor.set(0.5);
-    subtitle.x = app.screen.width / 2;
-    subtitle.y = 300;
-
-    app.stage.addChild(subtitle);
-}
-
-export function addMenuBtnText(app, x, y, btnLength, btnHeight)
-{
-    const contiText = new Text({ text: 'Contiguous' });
-    
-    contiText.anchor.set(0.5);
-    contiText.x = x + (btnLength / 2);
-    contiText.y = y + (btnHeight / 2);
-
-    app.stage.addChild(contiText);
-
-    const extText = new Text({ text: 'Extent-based' });
-
-    extText.anchor.set(0.5);
-    extText.x = x + (btnLength / 2);
-    extText.y = y + (btnHeight / 2) + 100;
-
-    app.stage.addChild(extText);
 }

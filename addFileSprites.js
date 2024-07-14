@@ -1,5 +1,5 @@
 import { Assets, Sprite, Point } from './pixi.mjs';
-import { onClick, onDragStart, onHover, onStopHovering } from './ContiguousGamecode.mjs';
+import { onClick, onHover, onStopHovering } from './ContiguousGamecode.mjs';
 
 export async function addFileSprites(container, files, originalSpritePos)
 {

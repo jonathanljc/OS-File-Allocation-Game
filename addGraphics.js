@@ -1,5 +1,6 @@
 import { Graphics } from './pixi.mjs';
 import { createFileAllocationTable } from './addText.js';
+
 export function addGrid(app, container, fileNum, blocks, gridPlacement) 
 {   
     // Blocks added counter
@@ -13,7 +14,7 @@ export function addGrid(app, container, fileNum, blocks, gridPlacement)
         let y = Math.floor(i / 5) * 100;
         // Rectangle + line style 2
         graphics.rect(x, y, 100, 100);
-        graphics.stroke({ width: 10, color: 0xffffff });
+        graphics.stroke({ width: 20, color: 0x000000 });
 
         // If fileNum is not 0, add the file to the grid
         if(fileNum != 0){
@@ -26,7 +27,7 @@ export function addGrid(app, container, fileNum, blocks, gridPlacement)
 
         // Colour the grid based on the file colour
         if (gridPlacement[i] == 0) {
-            graphics.fill(0xc34288); // Magenta (default)
+            graphics.fill(0xFFFFFF); // white (default)
         }else if(gridPlacement[i] == 1){
             graphics.fill(0xA52A2A); // Brown
         }else if(gridPlacement[i] == 2){
@@ -71,7 +72,7 @@ export function removeFile(app, container, fileNum, blocks, gridPlacement)
         let y = Math.floor(i / 5) * 100;
         // Rectangle + line style 2
         graphics.rect(x, y, 100, 100);
-        graphics.stroke({ width: 10, color: 0xffffff });
+        graphics.stroke({ width: 20, color: 0x000000});
 
         // If fileNum is not 0, and still have file blocks allocated, remove file from the grid
         if(fileNum != 0 && blocks != 0){
@@ -80,15 +81,13 @@ export function removeFile(app, container, fileNum, blocks, gridPlacement)
                 gridPlacement[i] = 0;
                 blocks--;
             }
-
-    // Add the call to update the file allocation table
-    createFileAllocationTable(app, gridPlacement);
-            
+            // Add the call to update the file allocation table
+            createFileAllocationTable(app, gridPlacement);
         }
 
         // Colour the grid based on the colour code
         if (gridPlacement[i] == 0) {
-            graphics.fill(0xc34288); // Magenta (default)
+            graphics.fill(0xFFFFFF); // White (default)
         }else if(gridPlacement[i] == 1){
             graphics.fill(0xA52A2A); // Brown
         }else if(gridPlacement[i] == 2){
@@ -134,27 +133,4 @@ function checkIfCanFill(gridPlacement, blocks)
     }
 
     return false;
-}
-
-export function addMenuBtn(app, x, y, btnLength, btnHeight)
-{
-    const contiBtn = new Graphics();
-    
-    contiBtn.rect(x,y,btnLength,btnHeight);
-    contiBtn.fill(0x69ed5c);
-
-    app.stage.addChild(contiBtn);
-
-    contiBtn.eventMode = 'static';
-    contiBtn.on('pointerdown', goContiguous, contiBtn);
-
-    const extBtn = new Graphics();
-    y = y + 100;
-    extBtn.rect(x,y,btnLength,btnHeight);
-    extBtn.fill(0xd8eb4d);
-
-    app.stage.addChild(extBtn);
-
-    extBtn.eventMode = 'static';
-    extBtn.on('pointerdown', goExtentBased, extBtn);
 }

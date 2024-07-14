@@ -83,8 +83,15 @@ export function addFileInfoText(app, fileSprite, fileBlocks)
 
 // Function to create and display the file allocation table
 export function createFileAllocationTable(app, gridPlacement) {
+    // Remove any existing table container
+    const existingTable = app.stage.getChildByName('fileAllocationTable');
+    if (existingTable) {
+        app.stage.removeChild(existingTable);
+    }
+
     // Create a container for the table
     const tableContainer = new Container();
+    tableContainer.name = 'fileAllocationTable';
 
     // Define the style for the table text
     const style = new TextStyle({

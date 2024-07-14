@@ -153,5 +153,6 @@ export function onClick()
         targetFile = this;
         targetFile.alpha = 1;
         removeColoredSquares(app, targetFile.label, files[targetFile.label], gridPlacement, gridContainer);
+        createFileAllocationTable(app, gridPlacement);
     }
 }

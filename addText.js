@@ -29,7 +29,7 @@ export function addStartingText(app)
 {
     // Create file allocation method text
     const allocateMethod = new Text({
-        text: 'Contiguous File Allocation: Drag and drop files into storage',
+        text: 'Contiguous File Allocation: click on a file to see how it is allocated',
         style,
     });
     allocateMethod.x = 25;

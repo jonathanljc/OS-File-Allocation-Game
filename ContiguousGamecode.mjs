@@ -53,8 +53,8 @@ app.stage.hitArea = app.screen;
 // Add file sprites with mouse interactivity
 const fileSpriteContainer = new Container();
 app.stage.addChild(fileSpriteContainer);
-let originalSpritePos = {};
-addFileSprites(fileSpriteContainer, files, originalSpritePos);
+// let originalSpritePos = {};
+addFileSprites(fileSpriteContainer, files);
 
 export function onHover() 
 {
@@ -82,7 +82,7 @@ export function onClick()
     if (this.alpha == 1) 
     {
         targetFile = this;
-        targetFile.alpha = 0.5;
+        targetFile.alpha = 0.25;
         try {
             colorInGrid(app, targetFile.label, files[targetFile.label], gridPlacement, gridContainer); // color-in grids based on num of blocks of memory that the selected file needs
             createFileAllocationTable(app, gridPlacement); // Update the file allocation table

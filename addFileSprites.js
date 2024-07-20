@@ -1,13 +1,19 @@
 import { Assets, Sprite, Point } from './pixi.mjs';
 import { onClick, onHover, onStopHovering } from './ContiguousGamecode.mjs';
 
-export async function addFileSprites(container, files, originalSpritePos)
+export async function addFileSprites(container, files)
 {
     // Load the bunny texture
-    const texture = await Assets.load('./assets/images/file.png');
+    const texture1 = await Assets.load('./assets/images/file1.png');
+    const texture2 = await Assets.load('./assets/images/file2.png');
+    const texture3 = await Assets.load('./assets/images/file3.png');
+    const texture4 = await Assets.load('./assets/images/file4.png');
 
     // Set the texture's scale mode to nearest to preserve pixelation
-    texture.source.scaleMode = 'nearest';
+    texture1.source.scaleMode = 'nearest';
+    texture2.source.scaleMode = 'nearest';
+    texture3.source.scaleMode = 'nearest';
+    texture4.source.scaleMode = 'nearest';
 
     // Create file sprites
     let x = 1000;
@@ -15,12 +21,17 @@ export async function addFileSprites(container, files, originalSpritePos)
     for (let i = 0; i < Object.keys(files).length; i++)
     {
         let fileNum = Object.keys(files)[i];
-        createFile(x, y, fileNum);
-        originalSpritePos[i] = new Point(x, y);
+        switch (fileNum) {
+            case "1": createFile(x, y, fileNum, texture1); break;
+            case "2": createFile(x, y, fileNum, texture2); break;
+            case "3": createFile(x, y, fileNum, texture3); break;
+            case "4": createFile(x, y, fileNum, texture4); break;
+        }
+        // originalSpritePos[i] = new Point(x, y);
         y += 150;
     }
 
-    function createFile(x, y, fileNum)
+    function createFile(x, y, fileNum, texture)
     {
         // Create our little bunny friend..
         const fileSprite = new Sprite(texture);

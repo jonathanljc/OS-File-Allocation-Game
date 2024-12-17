@@ -10,3 +10,9 @@ Pre-requisites:
 To test game:
 1. run command "http-server" within project directory
 2. Open url http://localhost:8080/ in web-browser
+---
+## 🎥 **Video Demo**
+
+Watch our project demo on YouTube:[File Allocation Game Demo](https://www.youtube.com/watch?v=crrF_tfmnkw)
+
+---
